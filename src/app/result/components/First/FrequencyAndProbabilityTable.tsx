@@ -1,6 +1,5 @@
-'use client'
+import { FrequencyAndProbabilityResult } from "@/app/utils/Calculations";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table'
-import { FrequencyAndProbabilityResult } from "./Calculations"
 
 interface Props {
   data: FrequencyAndProbabilityResult;

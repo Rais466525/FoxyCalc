@@ -1,8 +1,8 @@
-import { calculateEntropy } from "./calculations"
+import { calculateEntropy } from "@/app/utils/Calculations";
 
 interface EntropyDisplayProps {
-  str: string
-  title: string
+  str: string;
+  title: string;
 }
 
 export const EntropyDisplay: React.FC<EntropyDisplayProps> = ({ str, title }) => {

@@ -1,5 +1,3 @@
-"use client"
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface ConditionalFrequencyTableProps {
@@ -10,7 +8,6 @@ interface ConditionalFrequencyTableProps {
 
 export const ConditionalFrequencyTable: React.FC<ConditionalFrequencyTableProps> = ({
   data,
-  uniqueChars,
   title,
 }) => {
   return (
@@ -20,8 +17,8 @@ export const ConditionalFrequencyTable: React.FC<ConditionalFrequencyTableProps>
         <TableHeader>
           <TableRow>
             <TableHead>Char</TableHead>
-            {uniqueChars.map((char, index) => (
-              <TableHead key={index}>{char}</TableHead>
+            {data.map((item, index) => (
+               <TableHead key={index}>{item.char}</TableHead>
             ))}
           </TableRow>
         </TableHeader>

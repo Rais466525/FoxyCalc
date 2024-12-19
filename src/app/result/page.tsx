@@ -1,15 +1,22 @@
-"use client"
-
-import { useSearchParams } from "next/navigation"
+'use client'
 // First
-import { calculateFrequenciesAndProbabilities } from "./components/First/Calculations";
-import { FrequencyAndProbabilityTable } from "./components/First/FrequencyAndProbabilityTable";
 // Second
-import { EntropyDisplay } from './components/Second/EntropyDisplay';
 // Third
-import { ConditionalFrequencyTable } from "./components/Third/ConditionalFrequencyTable";
-import { calculateConditionalFrequencies } from "./components/Third/calculations";
 // Fourth
+// Fifth
+// Sixth
+// Seventh
+// Eighth
+// Ninth
+
+import { useSearchParams } from "next/navigation";
+import {
+  calculateFrequenciesAndProbabilities,
+  calculateConditionalFrequencies,
+} from "@/app/utils/Calculations";
+import { FrequencyAndProbabilityTable } from "./components/First/FrequencyAndProbabilityTable";
+import { EntropyDisplay } from "./components/Second/EntropyDisplay";
+import { ConditionalFrequencyTable } from "./components/Third/ConditionalFrequencyTable";
 
 export default function Result() {
   const searchParams = useSearchParams();
@@ -63,9 +70,6 @@ export default function Result() {
           title="Conditional Frequencies Y → X"
         />
       </div>
-
-      <div>
-      </div>
     </div>
-  )
+  );
 }
