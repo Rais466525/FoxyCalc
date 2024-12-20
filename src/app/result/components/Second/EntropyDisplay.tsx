@@ -13,10 +13,9 @@ export const EntropyDisplay: React.FC<EntropyDisplayProps> = ({ str, title }) =>
   const entropy = calculateEntropy(str);
 
   return (
-    <div className="mb-6">
-      <h2 className="text-xl font-semibold mb-2">{title}</h2>
-      <p>
-        Энтропия: <strong>{entropy}</strong>
+    <div>
+      <p className="text-xl font-semibold">
+        {title}: <strong>{entropy}</strong>
       </p>
     </div>
   )

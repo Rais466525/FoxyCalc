@@ -12,11 +12,11 @@ export const FrequencyAndProbabilityTable: React.FC<Props> = ({ data, title }) =
   }
 
   return (
-    <div className="">
-      <h2 className="text-xl font-semibold mb-4">{title}</h2>
+    <div className='border-2 border-black'>
+      <h2 className="bg-primary text-base font-semibold p-1 border-b-2 border-black ">{title}</h2>
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className='text-blue-900 text-semibold'>
             <TableCell>Символ</TableCell>
             <TableCell>Кол-во</TableCell>
             <TableCell>Шанс</TableCell>

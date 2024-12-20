@@ -1,12 +1,12 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-interface ConditionalFrequencyTableProps {
-  data: { char: string; counts: number[] }[];
+interface ConditionalProbabilityTableProps {
+  data: { char: string; probabilities: number[] }[];
   uniqueChars: string[];
   title: string;
 }
 
-export const ConditionalFrequencyTable: React.FC<ConditionalFrequencyTableProps> = ({
+export const ConditionalProbabilityTable: React.FC<ConditionalProbabilityTableProps> = ({
   data,
   uniqueChars,
   title,
@@ -26,11 +26,11 @@ export const ConditionalFrequencyTable: React.FC<ConditionalFrequencyTableProps>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map(({ char, counts }, rowIndex) => (
+          {data.map(({ char, probabilities }, rowIndex) => (
             <TableRow key={rowIndex}>
               <TableCell>{char}</TableCell>
-              {counts.map((count, colIndex) => (
-                <TableCell key={colIndex}>{count}</TableCell>
+              {probabilities.map((probability, colIndex) => (
+                <TableCell key={colIndex}>{probability.toFixed(3)}</TableCell>
               ))}
             </TableRow>
           ))}

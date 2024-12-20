@@ -1,3 +1,4 @@
+// app/utils/Calculations.ts
 export interface FrequencyAndProbabilityResult {
   frequencies: { char: string; count: number }[];
   probabilities: { char: string; probability: number }[];
@@ -9,13 +10,17 @@ export interface FrequencyAndProbabilityResult {
  * Символы сортируются в алфавитном порядке.
  */
 export const calculateFrequenciesAndProbabilities = (str: string): FrequencyAndProbabilityResult => {
-  const uniqueChars = [...new Set(str)].sort()
-  const frequencies = uniqueChars.map((char) => ({
-    char,
-    count: str.split(char).length - 1,
-  }));
+  const charCounts = new Map<string, number>();
 
-  const total = frequencies.reduce((sum, { count }) => sum + count, 0);
+  for (const char of str) {
+    charCounts.set(char, (charCounts.get(char) || 0) + 1);
+  }
+
+  const frequencies = Array.from(charCounts.entries())
+    .sort(([charA], [charB]) => charA.localeCompare(charB))
+    .map(([char, count]) => ({ char, count }));
+
+  const total = str.length;
 
   const probabilities = frequencies.map(({ char, count }) => ({
     char,
@@ -29,15 +34,17 @@ export const calculateFrequenciesAndProbabilities = (str: string): FrequencyAndP
  * Рассчитывает энтропию строки.
  */
 export const calculateEntropy = (str: string): number => {
-  const uniqueChars = [...new Set(str)];
-  const frequencies = uniqueChars.map((char) => str.split(char).length - 1);
-  const total = frequencies.reduce((sum, count) => sum + count, 0);
+  const charCounts = new Map<string, number>();
 
-  const probabilities = frequencies.map((count) => count / total);
-  const entropy = probabilities.reduce(
-    (sum, p) => (p > 0 ? sum - p * Math.log2(p) : sum),
-    0
-  );
+  for (const char of str) {
+    charCounts.set(char, (charCounts.get(char) || 0) + 1);
+  }
+
+  const total = str.length;
+  const entropy = Array.from(charCounts.values()).reduce((sum, count) => {
+    const p = count / total;
+    return p > 0 ? sum - p * Math.log2(p) : sum;
+  }, 0);
 
   return Math.round(entropy * 1000) / 1000;
 };
@@ -50,19 +57,26 @@ export const calculateConditionalFrequencies = (
   str1: string,
   str2: string
 ): { char: string; counts: number[] }[] => {
-  const uniqueChars = [...new Set(str1 + str2)].sort()
-  const results: { char: string; counts: number[] }[] = []
+  const uniqueChars1 = Array.from(new Set(str1)).sort();
+  const uniqueChars2 = Array.from(new Set(str2)).sort();
 
-  uniqueChars.forEach((char1) => {
-    const counts = uniqueChars.map((char2) =>
-      str1.split("").reduce(
-        (acc, _, idx) =>
-          str1[idx] === char1 && str2[idx] === char2 ? acc + 1 : acc,
-        0
-      )
-    )
-    results.push({ char: char1, counts });
-  })
+  return uniqueChars1.map((char1) => ({
+    char: char1,
+    counts: uniqueChars2.map((char2) => {
+      let count = 0;
+      for (let i = 0; i < str1.length; i++) {
+        if (str1[i] === char1 && str2[i] === char2) {
+          count++;
+        }
+      }
+      return count;
+    }),
+  }));
+};
 
-  return results
-}
+/**
+ * Возвращает длины двух строк.
+ */
+export const getStringLengths = (str1: string, str2: string): { lengthX: number; lengthY: number } => {
+  return { lengthX: str1.length, lengthY: str2.length };
+};
