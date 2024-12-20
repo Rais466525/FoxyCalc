@@ -1,60 +1,56 @@
 'use client'
 
-import {
-  calculateConditionalFrequencies,
-  calculateFrequenciesAndProbabilities,
-} from "@/app/utils/Calculations"
-import { useSearchParams } from "next/navigation"
-import { FrequencyAndProbabilityTable } from "./components/First/FrequencyAndProbabilityTable"
-import { EntropyDisplay } from "./components/Second/EntropyDisplay"
-import { ConditionalFrequencyTable } from "./components/Third/ConditionalFrequencyTable"
-import { ConditionalProbabilityTable } from './components/Fourth/ConditionalProbabilityTable'
+import { calculateAllMetrics } from "@/app/utils/Calculations";
+import { useSearchParams } from "next/navigation";
+import { FrequencyAndProbabilityTable } from "./components/First/FrequencyAndProbabilityTable";
+import { EntropyDisplay } from "./components/Second/EntropyDisplay";
+import { ConditionalFrequencyTable } from "./components/Third/ConditionalFrequencyTable";
+import { ConditionalEntropy } from "./components/Metrics/ConditionalEntropy";
+import { JointEntropy } from "./components/Metrics/JointEntropy";
+import { InformationAmount } from "./components/Metrics/InformationAmount";
+import { SumConditionalProbabilities } from "./components/Metrics/SumConditionalProbabilities";
+import { MutualInformation } from "./components/Metrics/MutualInformation";
 
 export default function Result() {
-  const searchParams = useSearchParams()
-  const x = searchParams.get("x") || ""
-  const y = searchParams.get("y") || ""
+  const searchParams = useSearchParams();
+  const x = searchParams.get("x") || "";
+  const y = searchParams.get("y") || "";
 
   if (!x || !y) {
-    return <div className="pt-[104px]">Error: Отсутствуют параметры</div>
+    return <div className="pt-[104px]">Error: Отсутствуют параметры</div>;
   }
 
-  const xResult = calculateFrequenciesAndProbabilities(x)
-  const yResult = calculateFrequenciesAndProbabilities(y)
+  const {
+    xResult,
+    yResult,
+    entropyX,
+    entropyY,
+    jointEntropy,
+    conditionalEntropy,
+    totalEntropy,
+    informationAmount,
+    mutualInformation,
+    conditionalFrequenciesXY,
+    conditionalFrequenciesYX,
+  } = calculateAllMetrics(x, y);
 
-  const conditionalFrequenciesXY = calculateConditionalFrequencies(x, y)
-  const conditionalFrequenciesYX = calculateConditionalFrequencies(y, x)
-
-  // Уникальные символы
-  const uniqueChars = [...new Set(x + y)].sort()
+  const uniqueChars = [...new Set(x + y)].sort();
 
   return (
-    <main className='pt-[104px] px-4 flex flex-col gap-3'>
-      <h1 className='text-2xl font-bold mb-3'>Решение задач</h1>
+    <main className="pt-[104px] px-4 flex flex-col gap-3">
+      <h1 className="text-2xl font-bold mb-3">Решение задач</h1>
 
-      <div className='bg-foreground p-4 rounded-md space-y-5'>
-        <FrequencyAndProbabilityTable
-          data={xResult}
-          title="Вероятность строки X"
-        />
-        <FrequencyAndProbabilityTable
-          data={yResult}
-          title="Вероятность строки Y"
-        />
+      <div className="bg-foreground p-4 rounded-md space-y-5">
+        <FrequencyAndProbabilityTable data={xResult} title="Вероятность строки X" />
+        <FrequencyAndProbabilityTable data={yResult} title="Вероятность строки Y" />
       </div>
 
-      <div className='bg-foreground p-4 rounded-md'>
-        <EntropyDisplay
-          str={x}
-          title="Энтропия строки X"
-        />
-        <EntropyDisplay
-          str={y}
-          title="Энтропия строки Y"
-        />
+      <div className="bg-foreground p-4 rounded-md">
+        <EntropyDisplay str={x} title="Энтропия строки X" value={entropyX} />
+        <EntropyDisplay str={y} title="Энтропия строки Y" value={entropyY} />
       </div>
 
-      <div className='bg-foreground p-4 rounded-md space-y-5'>
+      <div className="bg-foreground p-4 rounded-md space-y-5">
         <ConditionalFrequencyTable
           data={conditionalFrequenciesXY}
           uniqueChars={uniqueChars}
@@ -67,7 +63,11 @@ export default function Result() {
         />
       </div>
 
-      <div className='bg-foreground p-4 rounded-md space-y-5'>
+      <div className="bg-foreground p-4 rounded-md space-y-5">
+        <ConditionalEntropy value={conditionalEntropy} />
+        <JointEntropy value={jointEntropy} />
+        <InformationAmount value={informationAmount} />
+        <SumConditionalProbabilities value={mutualInformation} />
       </div>
     </main>
   )
