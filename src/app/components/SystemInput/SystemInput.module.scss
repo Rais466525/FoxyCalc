@@ -1,0 +1,24 @@
+// components/SystemInput.module.scss
+.form {
+   @apply flex flex-col gap-4 p-4 bg-white rounded shadow-md;
+}
+
+.inputGroup {
+   @apply flex flex-col gap-2;
+}
+
+.input {
+   @apply border border-gray-300 rounded p-2;
+}
+
+.errorInput {
+   @apply border-red-500;
+}
+
+.error {
+   @apply text-red-500 text-sm;
+}
+
+.submitButton {
+   @apply bg-blue-500 text-white rounded p-2 hover:bg-blue-600;
+}
